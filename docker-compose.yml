@@ -2,6 +2,8 @@ version: "3.9"
 services:
     web:
         image: dankeroni/vs-lab:latest
+        environment:
+            - TODO_API_URL=http://localhost:8010/proxy
         depends_on:
             - api
         ports:

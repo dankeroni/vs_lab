@@ -1,7 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { session } from "$app/stores";
 
-    const baseURL = "http://localhost:8010/proxy";
+    const todoAPIURL = $session.todoAPIURL;
 
     interface Todo {
         todo: string;
@@ -10,7 +11,7 @@
 
     let todos: Todo[] = [];
     async function updateTodos() {
-        const res = await fetch(`${baseURL}/todos/`);
+        const res = await fetch(`${todoAPIURL}/todos/`);
         todos = await res.json();
     }
 
@@ -22,7 +23,7 @@
     async function handleSubmit(e: Event) {
         if (!newTodo) return;
 
-        await fetch(`${baseURL}/todos/`, {
+        await fetch(`${todoAPIURL}/todos/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -40,7 +41,7 @@
 
 <h1>Welcome to SvelteKit</h1>
 
-<form action="${baseURL}/todos/" method="post" on:submit|preventDefault={handleSubmit}>
+<form action="${todoAPIURL}/todos/" method="post" on:submit|preventDefault={handleSubmit}>
     <input name="text" aria-label="Add todo" placeholder="add a todo" bind:value={newTodo} />
 </form>
 
@@ -49,7 +50,7 @@
         {todo.todo}
         <button
             on:click={async () => {
-                await fetch(`${baseURL}/todos/${todo.todo}`, {
+                await fetch(`${todoAPIURL}/todos/${todo.todo}`, {
                     method: "DELETE"
                 });
                 updateTodos();
