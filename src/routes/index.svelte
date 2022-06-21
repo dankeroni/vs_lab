@@ -20,7 +20,7 @@
     });
 
     let newTodo = "";
-    async function handleSubmit(e: Event) {
+    async function handleSubmit() {
         if (!newTodo) return;
 
         await fetch(`${todoAPIURL}/todos/`, {
@@ -39,6 +39,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Todo List</title>
+</svelte:head>
+
 <h1>Welcome to SvelteKit</h1>
 
 <form action="${todoAPIURL}/todos/" method="post" on:submit|preventDefault={handleSubmit}>
@@ -54,7 +58,10 @@
                     method: "DELETE"
                 });
                 updateTodos();
-            }}>X</button
+            }}
+            aria-label="Delete todo"
         >
+            X
+        </button>
     </p>
 {/each}
