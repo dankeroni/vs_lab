@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { session } from "$app/stores";
 
+    // Get the api url from the session store
     const todoAPIURL = $session.todoAPIURL;
 
     interface Todo {
@@ -9,16 +10,20 @@
         priority: number;
     }
 
+    // Binding from js to html is handeled by the svelte compiler,
+    // so this is all we need to do.
     let todos: Todo[] = [];
     async function updateTodos() {
         const res = await fetch(`${todoAPIURL}/todos/`);
         todos = await res.json();
     }
 
+    // onMount only runs in the browser, not when prerendering
     onMount(() => {
         updateTodos();
     });
 
+    // Two way binding with bind directive (see below)
     let newTodo = "";
     async function handleSubmit() {
         if (!newTodo) return;
